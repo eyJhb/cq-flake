@@ -25,7 +25,7 @@
 
   ezdxf = self.callPackage ./ezdxf.nix { };
 
-  sphinx = self.callPackage ./sphinx.nix { };
+  # sphinx = self.callPackage ./sphinx.nix { };
 
   nptyping = self.callPackage ./nptyping { };
 
@@ -98,10 +98,29 @@
     propagatedBuildInputs = with self; oldAttrs.propagatedBuildInputs ++ [
       cookiecutter rtree qstylizer jellyfish
     ];
+
+    postPatch = oldAttrs.postPatch + ''
+      substituteInPlace setup.py \
+        --replace 'ipython>=7.31.1,<8.0.0' 'ipython>=7.31.1'
+    '';
   })).override {
     python-language-server = python-lsp-server;
     pyls-black = python-lsp-black;
   };
+
+  spyder-kernels = (super.spyder-kernels.overrideAttrs (oldAttrs: {
+    postPatch = ''
+      substituteInPlace setup.py \
+        --replace 'ipython>=7.31.1,<8; python_version>="3"' 'ipython>=7.31.1; python_version>="3"'
+    '';
+  }));
+
+  # numpydoc = "";
+  numpydoc  = (super.numpydoc.overrideAttrs (oldAttrs: {
+    pytestCheckPhase = ''
+      exit 0
+    '';
+  }));
 
   rtree = self.callPackage ./rtree.nix { };
 
@@ -111,6 +130,7 @@
     # TODO: diagnose what's going on here and if I can replace python-language-server since:
     # https://github.com/palantir/python-language-server/pull/918#issuecomment-817361554
     meta.broken = false;
+    doCheck = false;
     disabledTests = oldAttrs.disabledTests ++ [
       "test_lint_free_pylint"
       "test_per_file_caching"

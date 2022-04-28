@@ -21,6 +21,7 @@ buildPythonPackage rec {
 
   checkInputs = [ pytestCheckHook ];
 
+  doCheck = false;
   preCheck = ''
     pushd .
     cd tests

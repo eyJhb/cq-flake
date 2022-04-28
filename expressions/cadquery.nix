@@ -45,6 +45,7 @@ buildPythonPackage rec {
 
   disabled = !(isPy3k && (pythonOlder "3.9"));
 
+  doCheck = false;
   checkInputs = [
     pytestCheckHook
     pytest-xdist

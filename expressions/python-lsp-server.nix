@@ -1,7 +1,7 @@
 { lib, buildPythonPackage, fetchFromGitHub, pythonOlder
 , future, jedi, pluggy, python-jsonrpc-server, flake8
 , numpy, pyqt5, pandas, matplotlib
-, pytestCheckHook, mock, pytest-cov, coverage, setuptools, ujson, flaky, python-lsp-jsonrpc
+, pytestCheckHook, mock, pytest-cov, coverage, setuptools, setuptools-scm, ujson, flaky, python-lsp-jsonrpc
 , # Allow building a limited set of providers, e.g. ["pycodestyle"].
   providers ? ["*"]
   # The following packages are optional and
@@ -22,15 +22,24 @@ in
 
 buildPythonPackage rec {
   pname = "python-lsp-server";
-  version = "v1.3.3";
+  version = "v1.4.1";
   disabled = pythonOlder "3.6";
 
   src = fetchFromGitHub {
     owner = "python-lsp";
     repo = "python-lsp-server";
     rev = version;
-    sha256 = "sha256-F8f9NAjPWkm01D/KwFH0oA6nQ3EF4ZVCCckZTL4A35Y=";
+    sha256 = "sha256-rEfjxHw2NIVIa8RepxLPiXkRFhcGWLzm6w43n60zkFE=";
   };
+
+  SETUPTOOLS_SCM_PRETEND_VERSION = version;
+
+  nativeBuildInputs = [ setuptools-scm ];
+  postPatch = ''
+    substituteInPlace setup.cfg \
+      --replace "mccabe>=0.6.0,<0.7.0" "mccabe>=0.6.0"
+  '';
+
 
   propagatedBuildInputs = [ setuptools jedi pluggy future python-jsonrpc-server ujson python-lsp-jsonrpc ]
     ++ lib.optional (withProvider "autopep8") autopep8
