@@ -43,7 +43,7 @@ buildPythonPackage rec {
     fontDirectories = [ freefont_ttf ];
   };
 
-  disabled = !(isPy3k && (pythonOlder "3.9"));
+  disabled = !(isPy3k && (pythonOlder "3.10"));
 
   doCheck = false;
   checkInputs = [

@@ -68,11 +68,11 @@
             occt = opencascade-occt;
             nlopt_nonpython = nlopt;
           };
-          # python = pkgs.enableDebugging ((pkgs.python38.override {
+          # python = pkgs.enableDebugging ((pkgs.python3.override {
           #   packageOverrides = py-overrides;
           #   self = python;
           # }).overrideAttrs (oldAttrs: { disallowedReferences = []; }));
-          python = pkgs.python38.override {
+          python = pkgs.python3.override {
             packageOverrides = py-overrides;
             self = python;
           };
@@ -91,7 +91,7 @@
               ps: with ps; [ cadquery cq-kit python-language-server black mypy ocp-stubs pytest pytest-xdist pytest-cov pytest-flakefinder pybind11-stubgen ]
             );
             just-ocp = python.withPackages ( ps: with ps; [ ocp ] );
-            # cadquery-dev-shell = packages.python38.withPackages (
+            # cadquery-dev-shell = packages.python3.withPackages (
             #   ps: with ps; ([ black mypy ocp-stubs ]
             #   ++ cadquery.propagatedBuildInputs
             #   # I have no idea why, but I can't access checkInputs
