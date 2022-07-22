@@ -12,6 +12,8 @@
   , pybind11-stubgen-src
 }: self: super: rec {
 
+  cq_warehouse = self.callPackage ./cq-warehouse.nix { };
+
   clang = self.callPackage ./clang.nix {
     src = llvm-src;
     llvmPackages = gccSet.llvmPackages;

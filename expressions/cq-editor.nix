@@ -15,6 +15,7 @@ mkDerivationWith python3Packages.buildPythonApplication {
   inherit src;
 
   propagatedBuildInputs = with python3Packages; [
+    cq_warehouse
     cadquery
     Logbook
     pyqt5

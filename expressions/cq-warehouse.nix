@@ -15,7 +15,7 @@ buildPythonPackage rec {
     sha256 = "sha256-gCkDb2UmyHb+JEnonWkJr+oUkrntpclUMtHN9CBxleQ=";
   };
 
-  postPatchPhase = ''
+  preBuild = ''
     rm -rf dist
   '';
 
